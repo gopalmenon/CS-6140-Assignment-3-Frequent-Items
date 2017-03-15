@@ -49,7 +49,8 @@ class MisraGriesFrequentItems(object):
             # Decrement all counters since the label was not found and all counters are in use
             else:
 
-                labels_to_remove = list()
+                labels_to_remove = []
+
                 for label in self.labels_and_counters:
 
                     self.labels_and_counters[label] -= 1
