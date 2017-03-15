@@ -33,12 +33,52 @@ class MisraGriesFrequentItems(object):
     # Estimate the count for the k most occurring characters
     def estimate_character_counts(self):
 
+        # Read each character from the stream
         for stream_character in self.__get_next_character_from_stream_file():
-            print(stream_character)
+
+            # Increment the counter if the label was found
+            if stream_character in self.labels_and_counters:
+
+                self.labels_and_counters[stream_character] += 1
+
+            # Create a new entry for a label if there is an unused space
+            elif len(self.labels_and_counters) < self.number_of_items_to_estimate_frequency_for - 1:
+
+                self.labels_and_counters[stream_character] = 1
+
+            # Decrement all counters since the label was not found and all counters are in use
+            else:
+
+                labels_to_remove = list()
+                for label in self.labels_and_counters:
+
+                    self.labels_and_counters[label] -= 1
+
+                    # Remove dictionary entry if counter is zero
+                    if self.labels_and_counters[label] == 0:
+                        labels_to_remove.append(label)
+
+                # Remove entries for labels that have reached zero count
+                for label in labels_to_remove:
+                    del self.labels_and_counters[label]
+
+    # Return the characters along with the counter
+    def get_character_count_estimates(self):
+
+        labels = list()
+        label_counts = list()
+
+        for label in self.labels_and_counters:
+            labels.append(label)
+            label_counts.append(self.labels_and_counters[label])
+
+        return labels, label_counts
 
 if __name__ == "__main__":
 
-    misra_gries_frequent_items = \
-        MisraGriesFrequentItems(MisraGriesFrequentItems.S1_FILE_NAME,
-                                MisraGriesFrequentItems.NUMBER_OF_ITEMS_TO_ESTIMATE_FREQUENCY_FOR)
-    misra_gries_frequent_items.estimate_character_counts()
+    for file_name in [MisraGriesFrequentItems.S1_FILE_NAME, MisraGriesFrequentItems.S2_FILE_NAME]:
+        misra_gries_frequent_items \
+            = MisraGriesFrequentItems(file_name, MisraGriesFrequentItems.NUMBER_OF_ITEMS_TO_ESTIMATE_FREQUENCY_FOR)
+        misra_gries_frequent_items.estimate_character_counts()
+        print("Estimated char counts in file " + file_name)
+        print(misra_gries_frequent_items.get_character_count_estimates())
