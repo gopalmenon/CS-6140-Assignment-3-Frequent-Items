@@ -1,3 +1,5 @@
+import unittest
+
 ########################################################################################################################
 #                                                                                                                      #
 # Find frequent items in a stream using the Misra-Gries algorithm                                                      #
@@ -75,11 +77,27 @@ class MisraGriesFrequentItems(object):
 
         return labels, label_counts
 
-if __name__ == "__main__":
 
-    for file_name in [MisraGriesFrequentItems.S1_FILE_NAME, MisraGriesFrequentItems.S2_FILE_NAME]:
-        misra_gries_frequent_items \
-            = MisraGriesFrequentItems(file_name, MisraGriesFrequentItems.NUMBER_OF_ITEMS_TO_ESTIMATE_FREQUENCY_FOR)
-        misra_gries_frequent_items.estimate_character_counts()
-        print("Estimated char counts in file " + file_name)
-        print(misra_gries_frequent_items.get_character_count_estimates())
+########################################################################################################################
+#                                                                                                                      #
+# Unit testing class.                                                                                                  #
+#                                                                                                                      #
+########################################################################################################################
+
+
+class TestMisraGriesFrequentItems(unittest.TestCase):
+
+    def test_for_s1_and_s2(self):
+
+        for file_name in [MisraGriesFrequentItems.S1_FILE_NAME, MisraGriesFrequentItems.S2_FILE_NAME]:
+            misra_gries_frequent_items \
+                = MisraGriesFrequentItems(file_name, MisraGriesFrequentItems.NUMBER_OF_ITEMS_TO_ESTIMATE_FREQUENCY_FOR)
+            misra_gries_frequent_items.estimate_character_counts()
+            print("Estimated char counts in file " + file_name)
+            print(misra_gries_frequent_items.get_character_count_estimates())
+
+"""
+Self test
+"""
+if __name__ == "__main__":
+    unittest.main()
