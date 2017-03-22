@@ -18,8 +18,9 @@ Wednesday, March 22}
 \section{Streaming Algorithms}
 
 \paragraph{A: (20 points)} 
-Run the Misra-Gries Algorithm (see \textbf{L11.3.1}) with $(k - 1) = 9$ counters on streams $S1$ and $S2$. Report the output of the counters at the end of the stream.
+Run the Misra-Gries Algorithm (see \textbf{L11.3.1}) with $(k - 1) = 9$ counters on streams $S1$ and $S2$. Report the output of the counters at the end of the stream.\\
 
+The estimated counts for streams $S1$ and $S2$ are given in tables \ref{S1Misra} and \ref{S2Misra} respectively.
 
     \begin{table}[!h] 
     \centering
@@ -29,7 +30,7 @@ Run the Misra-Gries Algorithm (see \textbf{L11.3.1}) with $(k - 1) = 9$ counters
       \hline
    c  & a &  b & o & v & f & p  \\
       \hline      
-      $105715$ &   $195715$              &  $155715$  &          $2$             & $1$      & $1$    & $1$           \\
+      $\num[group-separator={,}]{105715}$ &   $\num[group-separator={,}]{195715}$              &  $\num[group-separator={,}]{155715}$  &          $2$             & $1$      & $1$    & $1$           \\
       \hline      
     \end{tabular}
     \end{table}
@@ -42,12 +43,12 @@ Run the Misra-Gries Algorithm (see \textbf{L11.3.1}) with $(k - 1) = 9$ counters
       \hline
    b  & c &  a & h & l & j & w & r  \\
       \hline      
-      $135715$ &   $175715$              &  $245715$  &          $1$             & $1$      & $1$    & $1$    & $1$       \\
+      $\num[group-separator={,}]{135715}$ &   $\num[group-separator={,}]{175715}$              &  $\num[group-separator={,}]{245715}$  &          $1$             & $1$      & $1$    & $1$    & $1$       \\
       \hline      
     \end{tabular}
     \end{table}
 
-In each stream, from just the counters, report how many objects might occur more than 20\% of the time, and which must occur more than 20\% of the time. 
+In each stream, from just the counters, report how many objects might occur more than 20\% of the time, and which must occur more than 20\% of the time. \\
 
 For any item $q$, the actual frequency $f_q$ and the frequency $\hat{f_q}$ reported by the algorithm are related by the equation
 
@@ -55,19 +56,38 @@ $$
 f_q - \frac{m}{k} \leq \hat{f_q}
 $$
 
-where $m=1,000,000$ is the size of the stream, and $k=10$ is the number of counters.\\
+where $m=\num[group-separator={,}]{1000000}$ is the size of the stream, and $k=10$ is the number of counters.\\
 Substituting these values into the above equation, we get
 
 \begin{equation*}
 \begin{aligned}
-f_q - \frac{1,000,000}{10} &\leq \hat{f_q}\\
-f_q - 100,000 &\leq \hat{f_q}\\
-f_q - \hat{f_q}  &\leq 100,000
+f_q - \frac{\num[group-separator={,}]{1000000}}{10} &\leq \hat{f_q}\\
+f_q - \num[group-separator={,}]{100000} &\leq \hat{f_q}\\
+f_q - \hat{f_q}  &\leq \num[group-separator={,}]{100000}
 \end{aligned}
 \end{equation*}
 
 This means that the maximum possible undercounting is by $\num[group-separator={,}]{100000}$. Given that $20\%$ of $\num[group-separator={,}]{1000000}$ is $\num[group-separator={,}]{200000}$, any label with count more than $\num[group-separator={,}]{200000}$, must occur more than $20\%$ of the time since over-counting is not possible. So label $a$ in stream $S2$ must occur more than $20\%$ of the time. Any label with count between $\num[group-separator={,}]{100000}$ and $\num[group-separator={,}]{200000}$ might occur more that $20\%$ of the time. So labels $a$, $b$ and $c$ in stream $S1$ and labels $b$ and $c$ in stream $S2$ might occur more than $20\%$ of the time.
 
 \paragraph{B: (20 points)}  
+Build a Count-Min Sketch (see \textbf{L12.1.1}) with $k = 10$ counters using $t = 5$ hash functions. Run it on streams $S1$ and $S2$.\\
+For both streams, report the estimated counts for objects $a$, $b$, and $c$. Just from the output of the sketch, which of these objects, with probably $1 - \delta = \frac{31}{32}$, might occur more than $20\%$ of the time?\\
+
+The estimated counts for streams $S1$ and $S2$ are given in table \ref{S3CountMin}.
+
+    \begin{table}[!h] 
+    \centering
+    \caption{Count-Min Sketch Counter Outputs}
+    \label{S3CountMin}
+    \begin{tabular}{K{1.5cm}K{1.5cm}K{1.5cm}K{1.5cm}}
+      \hline
+   Stream  & a &  b & c  \\
+      \hline      
+      $S1$ &   $\num[group-separator={,}]{250000}$              &  $\num[group-separator={,}]{243121}$  &          $\num[group-separator={,}]{160000}$      \\
+      \hline      
+      $S2$ &   $\num[group-separator={,}]{290000}$              &  $\num[group-separator={,}]{206917}$  &          $\num[group-separator={,}]{220000}$      \\
+      \hline      
+    \end{tabular}
+    \end{table}
 
 \end{document}
