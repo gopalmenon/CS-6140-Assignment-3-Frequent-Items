@@ -56,8 +56,8 @@ $$
 f_q - \frac{m}{k} \leq \hat{f_q}
 $$
 
-where $m=\num[group-separator={,}]{1000000}$ is the size of the stream, and $k=10$ is the number of counters.\\
-Substituting these values into the above equation, we get
+where $m=\num[group-separator={,}]{1000000}$ is the size of the stream, and $k=10$ is the number of counters plus $1$.\\
+Substituting these values into the above inequality, we get
 
 \begin{equation*}
 \begin{aligned}
@@ -83,9 +83,9 @@ The estimated counts for streams $S1$ and $S2$ are given in table \ref{S3CountMi
       \hline
    Stream  & a &  b & c  \\
       \hline      
-      $S1$ &   $\num[group-separator={,}]{250000}$              &  $\num[group-separator={,}]{243121}$  &          $\num[group-separator={,}]{160000}$      \\
+      $S1$ &   $\num[group-separator={,}]{266758}$              &  $\num[group-separator={,}]{243029}$  &          $\num[group-separator={,}]{176294}$      \\
       \hline      
-      $S2$ &   $\num[group-separator={,}]{290000}$              &  $\num[group-separator={,}]{206917}$  &          $\num[group-separator={,}]{220000}$      \\
+      $S2$ &   $\num[group-separator={,}]{303485}$              &  $\num[group-separator={,}]{206983}$  &          $\num[group-separator={,}]{233533}$      \\
       \hline      
     \end{tabular}
     \end{table}
@@ -136,9 +136,14 @@ From the above inequality, we can see that
 This means that the over-counting is limited by $\num[group-separator={,}]{200000}$. Since under-counting is not possible, we can see that since $a$ and $b$ in stream $S1$ and $a$, $b$ and $c$ in stream $S2$ have an estimated count of at least $\num[group-separator={,}]{200000}$, these labels might occur more that $20\%$ of the time (since $20\%$ of $\num[group-separator={,}]{1000000}$ is $\num[group-separator={,}]{200000}$) with probability $\frac{31}{32}$.
 
 \paragraph{C: (5 points)} 
-How would your implementation of these algorithms need to change (to answer the same questions) if each object of the stream was a \enquote{word} seen on Twitter, and the stream contained all tweets concatenated together?
+How would your implementation of these algorithms need to change (to answer the same questions) if each object of the stream was a \enquote{word} seen on Twitter, and the stream contained all tweets concatenated together?\\
+
+Assuming that we knew the number of words in the stream of tweets, the implementation of the algorithms could be changed to have counters for words instead of characters. If the number of words is not known, then these can be just counted using a word counter. The size of the counter would be $\log_2 m$, where $m$ is the number of words in all the tweets.
+
 
 \paragraph{D: (5 points)} 
-Describe one advantage of the Count-Min Sketch over the Misra-Gries Algorithm.
+Describe one advantage of the Count-Min Sketch over the Misra-Gries Algorithm.\\
+
+One advantage is that the order of the objects in the stream does not matter. The reason is that there is no decrementing of counters when the objects coming in are counted. In Misra-Gries, when an object comes in and there is no counter associated with the object, all counters are decremented. So if an object is spread out in a stream, it's count may be different from the case where it is not spread out.
 
 \end{document}
