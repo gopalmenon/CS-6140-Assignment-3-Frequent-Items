@@ -138,7 +138,32 @@ This means that the over-counting is limited by $\num[group-separator={,}]{20000
 \paragraph{C: (5 points)} 
 How would your implementation of these algorithms need to change (to answer the same questions) if each object of the stream was a \enquote{word} seen on Twitter, and the stream contained all tweets concatenated together?\\
 
-Assuming that we knew the number of words in the stream of tweets, the implementation of the algorithms could be changed to have counters for words instead of characters. If the number of words is not known, then these can be just counted using a word counter. The size of the counter would be $\log_2 m$, where $m$ is the number of words in all the tweets.
+Assuming that we knew the number of words, $m$,  in the stream of tweets, the implementation of the algorithms could be changed to have counters for words instead of characters. If the number of words is not known, then these can be just counted using a word counter as the stream is being read. The size of the counter would be $\log_2 m$, where $m$ is the number of words in all the tweets.\\
+
+For Misra-Gries,
+
+\begin{equation*}
+\begin{aligned}
+f_q - \frac{m}{k} &\leq \hat{f_q}\\
+f_q - \hat{f_q} &\leq\frac{m}{k}\\
+&\leq \frac{m}{10}
+\end{aligned}
+\end{equation*}
+
+For the case of Misra-Gries, the maximum undercount would be $\frac{m}{10}$. For an object to have to exist $20\%$ of the time, the count needs to be at least $\frac{m}{5}$ (which is $20\%$ of $m$) .  Any object with a count between $\frac{m}{5} -\frac{m}{10}$ and $\frac{m}{5}$, which is between $\frac{m}{10}$ and $\frac{m}{5}$, may exist at least $20\%$ of the time. \\
+
+For Count-Min Sketch,
+
+\begin{equation*}
+\begin{aligned}
+\hat{f_q} - f_q  &\leq \varepsilon m\\
+&\leq \frac{2}{k} m\\
+&\leq \frac{2}{10} m\\
+&\leq \frac{m}{5} 
+\end{aligned}
+\end{equation*}
+
+For the case of Count-Min Sketch, any object seen between $\frac{m}{5}$ (which is $20\%$ of $m$) and $\frac{m}{5} +  \frac{m}{5}$, which is between $\frac{m}{5}$ and $\frac{2m}{5}$, might occur $20\%$ of the time.
 
 
 \paragraph{D: (5 points)} 
