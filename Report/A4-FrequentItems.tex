@@ -50,7 +50,7 @@ The estimated counts for streams $S1$ and $S2$ are given in tables \ref{S1Misra}
 
 In each stream, from just the counters, report how many objects might occur more than 20\% of the time, and which must occur more than 20\% of the time. \\
 
-For any item $q$, the actual frequency $f_q$ and the frequency $\hat{f_q}$ reported by the algorithm are related by the equation
+For any item $q$, the actual frequency $f_q$ and the frequency $\hat{f_q}$ reported by the algorithm are related by the inequality
 
 $$
 f_q - \frac{m}{k} \leq \hat{f_q}
@@ -89,5 +89,56 @@ The estimated counts for streams $S1$ and $S2$ are given in table \ref{S3CountMi
       \hline      
     \end{tabular}
     \end{table}
+
+For any item $q$, the actual frequency $f_q$ and the frequency $\hat{f_q}$ reported by the algorithm are related by the PAC bound, 
+
+$$
+f_q \leq \hat{f_q} \leq f_q + \varepsilon m
+$$
+
+where the second inequality holds with a probability of $1-\delta$. The number of hash functions is related to $\delta$ by $t=\log_2\left(\frac{1}{\delta} \right)$ the number of counters per hash function is related to $\varepsilon$ by $k = \frac{2}{\varepsilon}$, and $m$ is the number of items in the stream. \\
+
+Given that 
+
+\begin{equation*}
+\begin{aligned}
+1 - \delta &= \frac{31}{32}\\
+\delta &= 1 - \frac{31}{32}\\
+&= \frac{1}{32}\\
+t&=\log_2\left(\frac{1}{\delta} \right)\\
+&= \log_2\left(\frac{1}{\frac{1}{32}} \right)\\
+&= \log_2\left(32\right)\\
+&=5
+\end{aligned}
+\end{equation*}
+
+This value of $t$ matches with the number of hash functions in the experiment.
+
+\begin{equation*}
+\begin{aligned}
+k &= \frac{2}{\varepsilon}\\
+\varepsilon &= \frac{2}{k}\\
+&=\frac{2}{10}
+\end{aligned}
+\end{equation*}
+
+From the above inequality, we can see that 
+
+\begin{equation*}
+\begin{aligned}
+\hat{f_q} &\leq f_q + \varepsilon m\\
+&\leq f_q + \frac{2}{10} \times \num[group-separator={,}]{1000000}\\
+&\leq f_q + \num[group-separator={,}]{200000}\\
+\hat{f_q} - f_q  &\leq \num[group-separator={,}]{200000}
+\end{aligned}
+\end{equation*}
+
+This means that the over-counting is limited by $\num[group-separator={,}]{200000}$. Since under-counting is not possible, we can see that since $a$ and $b$ in stream $S1$ and $a$, $b$ and $c$ in stream $S2$ have an estimated count of at least $\num[group-separator={,}]{200000}$, these labels might occur more that $20\%$ of the time (since $20\%$ of $\num[group-separator={,}]{1000000}$ is $\num[group-separator={,}]{200000}$) with probability $\frac{31}{32}$.
+
+\paragraph{C: (5 points)} 
+How would your implementation of these algorithms need to change (to answer the same questions) if each object of the stream was a \enquote{word} seen on Twitter, and the stream contained all tweets concatenated together?
+
+\paragraph{D: (5 points)} 
+Describe one advantage of the Count-Min Sketch over the Misra-Gries Algorithm.
 
 \end{document}
